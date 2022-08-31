@@ -16,6 +16,13 @@ class Artigo
         $insereArtigo->execute();
     }
 
+    public function remover(string $id): void
+    {
+        $removerArtigo = $this->mysql->prepare('DELETE FROM artigos WHERE id = ?');
+        $removerArtigo->bind_param('s', $id);
+        $removerArtigo->execute();
+    }
+
     public function exibirTodos(): array
     {
 
@@ -32,5 +39,12 @@ class Artigo
         $selecionaArtigo->execute();
         $artigo = $selecionaArtigo->get_result()->fetch_assoc();
         return $artigo;
+    }
+
+    public function editar(string $id, string $titulo, string $conteudo)
+    {
+        $editaArtigo = $this->mysql->prepare('UPDATE artigos SET titulo = ?, conteudo =? WHERE id = ?');
+        $editaArtigo->bind_param('sss', $titulo, $conteudo, $id);
+        $editaArtigo->execute();
     }
 }
